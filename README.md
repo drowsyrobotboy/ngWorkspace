@@ -49,15 +49,35 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     ```
 5. In `first.component.ts`
     - Define a data-member to store the value of store variables (in out case, store.counter's value)
-    - Inject the store as a dependency in the constructor()
+    - Inject the store as a dependency in the `constructor()`
         ```
         constructor(private store:Store<CounterState>) { }
         ```
-    - Subscribe to updates from the store under ngOnInit
-6. 
+    - Subscribe to updates from the store under `ngOnInit()`
+        ```
+        ngOnInit() {
+            // select method takes name 'counter' as defined in app.module
+            this.store.select('counter').subscribe(
+            (data) => this.mycount = data['counter']
+            );
+        }
+        ```
+    - Write dispatch functions
+        ```
+        increment(){
+            this.store.dispatch(new IncrementCounterAction());
+        }
 
-when workinf with sub apps which contain stores
-
-Finally in main app module, we have to update StoreModule.forRoot and in sub apps .. user .forFeature in app.module-exports
-
-Initiavl value of store may be different in boh sub applications .. but once data is changed .. it changes in both - so in main app .. it depends on which application loads first
+        decrement(){
+            this.store.dispatch(new DecrementCounterAction());
+        }
+        ```
+6. Finally, event-bind within template (html)
+```
+<h4>My Count: {{ mycount }}</h4>
+<button (click)="increment()">Increment</button>
+<button (click)="decrement()">Decrement</button>
+```
+7. **Note:** When working in a workspace with sub apps (which contain their own instances of store), in main app module, we have to update StoreModule.forRoot() and in sub apps .. use .forFeature() in app.module-exports - similar to point 4
+    - Init value of store object may be different in both sub applications (when run independantly) .. but once data is changed .. it changes in both
+    - If sub apps are loaded using routes in main app .. init value of store object depends on which application loads first
