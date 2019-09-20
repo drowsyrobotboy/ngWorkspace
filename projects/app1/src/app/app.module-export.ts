@@ -1,20 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AdminLibModule } from 'admin-lib';
-import { HomeComponent } from './home/home.component';
+import { FirstComponent } from './first/first.component';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    FirstComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    AdminLibModule
+    CommonModule,
+    RouterModule.forChild([{path:"", component: FirstComponent}])
   ],
   providers: [],
   bootstrap: [AppComponent]
